@@ -1,52 +1,35 @@
-let variables = "owo";
-variables = "uwu";
+"use strict";
 
-const owo = "owo";
-owo = "uwu"; // Give you an error
-
-function add(a, b) {
-  let owo = a;
-  return owo + b;
+async function fetchData(ref) {
+  const res = await fetch(`/posts/${ref}.json`);
+  return res.json();
 }
 
-const add2 = (a, b) => {
-  let owo = a;
-  return owo + b;
-};
+window.addEventListener('load', async () => {
+  const sections = document.getElementById('sections');
+  const posts = await Promise.all([
+    fetchData('october-2022'),
+    fetchData('november-2022'),
+    fetchData('december-2022'),
+  ]);
 
-/*
-const add2 = function (a, b) {
-  let owo = a;
-  return owo + b;
-}
-*/
-
-
-if (true === true) {
-
-} else if (true !== false) {
-
-} else {
-
-}
-
-for (let i = 0; i < 3; i++) {
-  console.log(i);
-}
-
-let i = 0;
-while (i < 3) {
-  console.log(i);
-  i++;
-}
-
-const list = [0, 1, 2, 3];
-for (let item of list) {
-  console.log(item);
-}
-list.forEach(item => {
-  console.log(item);
+  posts.forEach((post) => {
+    sections.innerHTML += `
+      <div class="section">
+        <h2>${post.title}</h2>
+        <div>
+          ${post.sections.map(section => `
+            <div>
+              <h3>${section.title}</h3>
+              <ul class="section-content">
+                ${section.content.map(item => `
+                  <li>${item}</li>
+                `).join('')}
+              </ul>
+            </div>
+          `).join('')}
+        </div>
+      </div>
+    `;
+  });
 });
-
-// true OR false AND false
-let math = (true || false) && false;
